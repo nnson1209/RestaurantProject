@@ -1,0 +1,52 @@
+<%- include('../partials/header') %>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <%- include('../partials/staffNavbar') %>
+
+        <main class="col-md-10 py-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-plus-circle me-2"></i>Thêm Món</h5>
+                            <p class="card-text">Thêm các món sushi mới vào thực đơn.</p>
+                            <a class="btn btn-orange" href="/staff/add-dish">Thêm Ngay</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-sync-alt me-2"></i>Cập Nhật Trạng Thái</h5>
+                            <p class="card-text">Quản lý trạng thái khả dụng của món ăn.</p>
+                            <a href="/staff/update-dish" class="btn btn-orange">Cập nhật</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-utensils me-2"></i>Đặt Món</h5>
+                            <p class="card-text">Đặt món cho khách hàng một cách nhanh chóng.</p>
+                            <a href="/staff/booking" class="btn btn-orange">Đặt Món</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-chart-bar me-2"></i>Thống Kê</h5>
+                            <p class="card-text">Xem thống kê doanh thu, khách hàng, món ăn.</p>
+                            <button class="btn btn-orange">Xem Ngay</button>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </main>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

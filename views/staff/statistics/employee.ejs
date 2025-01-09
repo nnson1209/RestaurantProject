@@ -1,0 +1,97 @@
+<%- include('../../partials/header') %>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <%- include('../../partials/staffNavbar') %>
+
+        <div class="col-md-12 p-4">
+            <div class="container mt-4">
+                <h1 class="mb-4">Thống Kê Thông Tin Nhân Viên</h1>
+                
+                <form class="row g-3 align-items-center mb-4" method="POST" action="/staff/search">
+                    <div class="col-md-3">
+                        <label for="searchName" class="form-label">Tìm kiếm nhân viên</label>
+                        <input type="text" class="form-control" id="searchName" name="query" value="" placeholder="Nhập từ khóa">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="area" class="form-label">Chọn Khu Vực</label>
+                        <select class="form-select" id="area" name="area" required>
+                            <option disabled selected>Tất cả</option>
+                            <% allKhuVuc.forEach(k => { %>
+                                <option value="<%= k.MaKhuVuc %>"><%= k.TenKhuVuc %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="branch" class="form-label">Chọn chi nhánh</label>
+                        <select disabled class="form-select" id="branch" name="branch" required>
+                            <option disabled selected value="all">Tất cả</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label d-block">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+                    </div>
+                </form>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="">
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Nhân Viên</th>
+                                <th>Tên Nhân Viên</th>
+                                <th>Giới tính</th>
+                                <th>Số Điện Thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Ngày vào làm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (employees.length > 0) { %>
+                                <% employees.forEach((employee, i) => { %>
+                                    <tr>
+                                        <td><%= i + 1 %></td>
+                                        <td><%= employee.MaNhanVien %></td>
+                                        <td><%= employee.HoTen %></td>
+                                        <td><%= employee.GioiTinh %></td>
+                                        <td><%= employee.SoDienThoai %></td>
+                                        <td><%= employee.DiaChi %></td>
+                                        <td><%= employee.NgayVaoLam %></td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="6" class="text-center">Không tìm thấy thông tin nhân viên</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>             
+        </div>
+    </div>
+</div>
+
+<script>
+    const areaSelect = document.getElementById('area');
+    const branchSelect = document.getElementById('branch');
+
+    areaSelect.addEventListener('change', (e) => {
+        branchSelect.disabled = false;
+
+        const branches = JSON.parse('<%- JSON.stringify(chiNhanh) %>');
+
+        const selectedArea = areaSelect.value;
+        branchSelect.innerHTML = `<option value="" disabled selected>Chọn chi nhánh...</option>`;
+        branches[selectedArea].forEach(branch => {
+            const option = document.createElement('option');
+            option.value = branch.MaChiNhanh;
+            option.textContent = branch.TenChiNhanh;
+            branchSelect.appendChild(option);
+        });
+    });
+</script>
+
+<%- include('../../partials/footer') %>

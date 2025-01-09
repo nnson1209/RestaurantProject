@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://cdn.haitrieu.com/wp-content/uploads/2021/11/Logo-DH-Khoa-Hoc-Tu-Nhien-%E2%80%93-HCMUS-1024x851.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css"
+      integrity="sha512-9xKTRVabjVeZmc+GUW8GgSmcREDunMM+Dt/GrzchfN8tkwHizc5RP4Ok/MXFFy5rIjJjzhndFScTceq5e6GvVQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  </head>
+  <body>
+    <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+      <div class="toast align-items-center text-bg-primary border-0" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true" style="display: none;">
+        <div class="d-flex">
+          <div class="toast-body">
+            </i> <span id="toastContent">Thông báo!</span>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3">
+      <div class="container">
+        <div class="logo-container">
+          <a href="/" class="navbar-brand">
+            <img src="/images/logo.jpg" alt="Logo" class="logo" />
+          </a>
+          <a
+            class="navbar-brand fw-bold"
+            href="/"
+            id="brand-name"
+            style="color: orangered"
+            >SuShiX</a
+          >
+        </div>
+
+        <!-- Thanh tìm kiếm ở giữa -->
+        <% if (role === 'customer') { %>
+          <form
+          class="d-flex search-form"
+          action="<%= role === 'customer' ? '/search' : '/staff/dish-search/1 ' %>"
+          method="POST"
+          id="searchForm"
+        >
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Tìm kiếm món ăn..."
+            aria-label="Search"
+            name="query"
+          />
+          <button class="btn btn-outline-success" type="submit" form="searchForm">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+        <% } %>
+
+        <% if (role === "customer") { %>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <% } %>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <% if (role === "customer") { %>
+            <li class="nav-item fw-semibold">
+              <a class="nav-link" href="/">Trang Chủ</a>
+            </li>
+            <li class="nav-item fw-semibold">
+              <a class="nav-link" href="/booking/table">Đặt bàn</a>
+            </li>
+            <li class="nav-item fw-semibold">
+              <a class="nav-link" href="/booking/food/1">Đặt món</a>
+            </li>
+            <% } %>
+            <li>
+              <div class="position-absolute top-0 end-0 p-3 mt-2">
+                <img
+                  src="/images/avatar.jpg"
+                  class="rounded-circle avatar"
+                  width="30"
+                  height="30"
+                  alt="Avatar"
+                  id="userMenu"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                />
+                <div class="dropdown">
+                  <ul
+                    class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="userMenu"
+                  >
+                    <% if (role === "customer") { %>
+                      <li>
+                        <a class="dropdown-item" href="/profile/<%= user.MaKhachHang %>">Trang Cá Nhân</a>
+                      </li>
+                    <% } %>
+                    <% if (role === "staff") { %>
+                      <li>
+                        <a class="dropdown-item" href="/profile/<%= user.MaNhanVien %>">Trang Cá Nhân</a>
+                      </li>
+                    <% } %>
+                    <li>
+                      <a class="dropdown-item text-danger" href="/auth/logout"
+                        >Đăng Xuất</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <% if (role === 'customer') { %>
+            <li id="cart-btn">
+              <a
+                href="/booking/cart/<%= user.MaKhachHang %>"
+                class="btn btn-outline-danger"
+              >
+                <i class="fa-solid fa-cart-shopping"></i>
+              </a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </body>
+</html>

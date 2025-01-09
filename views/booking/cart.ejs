@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+<div class="container my-4">
+    <h2 class="my-4">Giỏ Hàng Của Bạn</h2>
+    <table class="table table-bordered my-4">
+        <thead>
+            <tr>
+                <th>Số Thứ Tự</th>
+                <th>Tên Món Ăn</th>
+                <th>Số Lượng</th>
+                <th>Giá</th>
+                <th>Tổng</th>
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (gioHang.length > 0) { %>
+                <% gioHang.forEach((item, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= item.TenMonAn %></td>
+                        <td>
+                            <form action="/booking/cart/update" method="POST" class="d-inline">
+                                <input type="hidden" name="MAMON" value="<%= item.MaMon %>">
+                                <input type="hidden" name="MAKHACHHANG" value="<%= user.MaKhachHang %>">
+                                <input type="number" name="SOLUONG" value="<%= item.SoLuong %>" min="1" class="form-control form-control-sm w-50 d-inline">
+                                <button type="submit" class="btn btn-primary btn-sm">Cập Nhật</button>
+                            </form>
+                        </td>
+                        <td><%= item.Gia %>đ</td>
+                        <td><%= item.Gia * item.SoLuong %>đ</td>
+                        <td>
+                            <form action="/booking/cart/remove" method="POST" class="d-inline">
+                                <input type="hidden" name="MAMON" value="<%= item.MaMon %>">
+                                <input type="hidden" name="MAKHACHHANG" value="<%= user.MaKhachHang %>">
+                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="6" class="text-center">Giỏ hàng của bạn đang trống!</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <% if (gioHang.length > 0) { %>
+        <div class="text-end my-4">
+            <h4>Tổng tiền: <%= gioHang.reduce((acc, item) => acc + item.Gia * item.SoLuong, 0) %>đ</h4>
+            <form action="/booking/cart/checkout" method="POST">
+                <input type="hidden" name="MAKHACHHANG" value="<%= user.MaKhachHang %>">
+                <button type="submit" class="btn btn-success mt-4">Thanh Toán</button>
+            </form>
+        </div>
+    <% } %>
+</div>
+
+<%- include('../partials/footer') %>

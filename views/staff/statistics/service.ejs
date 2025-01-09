@@ -1,0 +1,97 @@
+<%- include('../../partials/header') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <%- include('../../partials/staffNavbar') %>
+
+    <div class="col-md-12 p-4">
+      <div class="container mt-4">
+        <h2 class="text-center mb-4">Thống Kê Nhân Viên</h2>
+
+        <form
+          action="/staff/statistics/service"
+          method="post"
+          class="row g-3 align-items-center mb-4"
+        >
+          <div class="col-md-2">
+            <label for="id" class="form-label">Mã nhân viên</label>
+            <input
+              type="text"
+              id="id"
+              name="id"
+              class="form-control"
+              value="<%= id %>"
+              placeholder="Nhập mã nhân viên"
+            />
+          </div>
+
+          <div class="col-md-3">
+            <label for="day" class="form-label">Ngày</label>
+            <input
+              type="text"
+              id="day"
+              name="day"
+              class="form-control"
+              value="<%= day %>"
+              placeholder="Nhập ngày"
+            />
+          </div>
+
+          <div class="col-md-3">
+            <label for="month" class="form-label">Tháng</label>
+            <input
+              type="text"
+              id="month"
+              name="month"
+              class="form-control"
+              value="<%= month %>"
+              placeholder="Nhập tháng"
+            />
+          </div>
+
+          <div class="col-md-3">
+            <label for="year" class="form-label">Năm</label>
+            <input
+              type="text"
+              id="year"
+              name="year"
+              class="form-control"
+              value="<%= year %>"
+              placeholder="Nhập năm"
+            />
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label d-block">&nbsp;</label>
+            <button type="submit" class="btn btn-primary w-100">
+              Xem Thống Kê
+            </button>
+          </div>
+        </form>
+
+        <div class="table-responsive">
+          <table class="table table table-bordered">
+            <thead class="">
+              <tr>
+                <th>Mã Nhân Viên</th>
+                <th>Tên Nhân Viên</th>
+                <th>Điểm Phục Vụ Trung Bình</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% employeeStats.forEach(employee => { %>
+              <tr>
+                <td><%= employee.MaNhanVien %></td>
+                <td><%= employee.HoTen %></td>
+                <td><%= employee.DiemPhucVuTrungBinh %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/footer') %>

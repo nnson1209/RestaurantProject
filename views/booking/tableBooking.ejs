@@ -1,0 +1,100 @@
+<%- include('../partials/header') %>
+
+<div class="container py-5">
+    <h1 class="text-center text-danger">Đặt Bàn Tại SuShiX</h1>
+    <div class="card mx-auto p-4" style="max-width: 500px;">
+        <form id="bookingForm" action="/booking/table" method="POST">
+            <!-- Khu vực -->
+            <div class="mb-3">
+                <label for="area" class="form-label">Chọn Khu Vực</label>
+                <select class="form-select" id="area" name="area" required>
+                    <option value="" disabled selected>Chọn khu vực...</option>
+                    <% for( let key in chiNhanh ) { %>
+                        <option value="<%= key %>"><%= allKhuVuc.filter(khuVuc => khuVuc.MaKhuVuc == key)[0].TenKhuVuc %></option>
+                    <% } %>
+                </select>
+            </div>
+
+            <!-- Chi nhánh -->
+            <div class="mb-3">
+                <label for="branch" class="form-label">Chọn Chi Nhánh</label>
+                <select class="form-select" id="branch" disabled required name="branch">
+                    <option value="" disabled selected>Chọn chi nhánh...</option>
+                </select>
+            </div>
+
+            <!-- Số lượng người  -->
+            <div class="mb-3">
+                <label for="people" class="form-label">Chọn Số Lượng Người</label>
+                <input disabled type="number" class="form-control" id="people" min="1" required name="people">
+            </div>
+
+            <!-- Ghi chú  -->
+            <div class="mb-3">
+                <label for="note" class="form-label">Ghi Chú</label>
+                <textarea disabled class="form-control" id="note" name="note"></textarea>
+            </div>
+
+            <!-- Mã Khách Hàng  -->
+            <div class="mb-3">
+                <label for="customerId" class="form-label">Mã Khách Hàng</label>
+                <input disabled type="text" class="form-control" id="customerId" name="customerId">
+            </div>    
+
+            <!-- Ngày -->
+            <div class="mb-3">
+                <label for="date" class="form-label">Chọn Ngày</label>
+                <input type="date" class="form-control" id="date" disabled required name="date">
+            </div>
+
+            <!-- Giờ -->
+            <div class="mb-3">
+                <label for="time" class="form-label">Chọn Giờ</label>
+                <input type="time" class="form-control" id="time" disabled required name="time">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Đặt Bàn</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const areaSelect = document.getElementById('area');
+    const branchSelect = document.getElementById('branch');
+    const dateInput = document.getElementById('date');
+    const timeInput = document.getElementById('time');
+    const numberOfPeople = document.getElementById('people');
+    const noteInput = document.getElementById('note');
+    const customerIdInput = document.getElementById('customerId');
+
+    areaSelect.addEventListener('change', () => {
+        branchSelect.disabled = false;
+
+        const branches = JSON.parse('<%- JSON.stringify(chiNhanh) %>');
+
+        const selectedArea = areaSelect.value;
+        branchSelect.innerHTML = `<option value="" disabled selected>Chọn chi nhánh...</option>`;
+        branches[selectedArea].forEach(branch => {
+            const option = document.createElement('option');
+            option.value = branch.MaChiNhanh;
+            option.textContent = branch.TenChiNhanh;
+            branchSelect.appendChild(option);
+        });
+    });
+
+    branchSelect.addEventListener('change', () => {
+        numberOfPeople.disabled = false;
+        noteInput.disabled = false;
+        customerIdInput.disabled = false;
+    });
+
+    numberOfPeople.addEventListener('change', () => {
+        dateInput.disabled = false;
+    });
+
+    dateInput.addEventListener('change', () => {
+        timeInput.disabled = false;
+    });
+</script>
+
+<%- include('../partials/footer') %>

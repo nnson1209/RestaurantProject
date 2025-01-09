@@ -1,0 +1,46 @@
+<button class="btn btn-primary show" id="admin-sidebar-toggle" type="button">
+    <i class="fas fa-bars"></i>
+</button>
+  
+<aside class="col-md-3 sidebar bg-orange" id="adminSidebar">
+    <button
+      class="btn btn-close text-white ms-auto"
+      id="admin-sidebar-close"
+      type="button"
+    ></button>
+    <nav class="nav flex-column py-3">
+        <a class="nav-link" href="/staff/add-dish">
+            <i class="fas fa-plus-circle me-2"></i> Thêm Món
+        </a>
+        <a class="nav-link" href="/staff/update-dish">
+            <i class="fas fa-sync-alt me-2"></i> Cập Nhật
+        </a>
+        <a class="nav-link" href="/staff/booking">
+            <i class="fas fa-utensils me-2"></i> Đặt Món
+        </a>
+        <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#statMenu" role="button" aria-expanded="false">
+            <i class="fas fa-chart-bar me-2"></i> Thống Kê
+        </a>
+        <div class="collapse" id="statMenu">
+            <a class="nav-link ps-4" href="/staff/statistics/revenue">
+                <i class="fas fa-dollar-sign me-2"></i> Doanh Thu
+            </a>
+            <a class="nav-link ps-4" href="/staff/statistics/service">
+                <i class="fas fa-concierge-bell me-2"></i> Dịch Vụ
+            </a>
+            <a class="nav-link ps-4" href="/staff/statistics/employee">
+                <i class="fas fa-user-tie me-2"></i> Nhân Viên
+            </a>
+            <a class="nav-link ps-4" href="/staff/invoices/1">
+                <i class="fas fa-file-invoice me-2"></i> Hoá Đơn
+            </a>
+            <a class="nav-link ps-4" href="/staff/orders/1">
+                <i class="fas fa-file-invoice me-2"></i> Phiếu Đặt Món
+            </a>
+            <a class="nav-link ps-4" href="/staff/customer-card/1">
+                <i class="fas fa-id-card me-2"></i> Thẻ KH
+            </a>
+        </div>
+    </nav>
+</aside>
+  

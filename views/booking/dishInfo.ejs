@@ -1,0 +1,79 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-5">
+  <!-- Thông tin chi tiết món ăn -->
+  <div class="row">
+    <div class="col-md-6">
+      <img
+        src="https://media-cdn.tripadvisor.com/media/photo-p/0a/1b/b2/3a/sushi-hokkaido-sachi.jpg"
+        alt="<%= monAn.TenMonAn %>"
+        class="img-fluid rounded shadow"
+        style="height: 500px"
+      />
+    </div>
+    <div class="col-md-6">
+      <h2 class="text-primary"><%= monAn.TenMonAn %></h2>
+      <p class="text-muted"><strong>Mã Món:</strong> <%= monAn.MaMon %></p>
+      <p class="text-muted">
+        <strong>Phân Mục:</strong> <%= monAn.TenPhanMuc %>
+      </p>
+      <p class="text-muted">
+        <strong>Trạng Thái:</strong>
+        <%= monAn.TrangThaiPhucVu === true ? 'Đang Phục Vụ' : 'Tạm Hết' %>
+      </p>
+      <p class="text-danger"><strong>Giá:</strong> <%= monAn.Gia %>đ</p>
+
+      <!-- Nút thêm món vào giỏ hàng -->
+      <% if (monAn.TrangThaiPhucVu === true) { %>
+      <button
+        type="submit"
+        class="add-to-cart-btn btn btn-warning"
+        data-id="<%= monAn.MaMon %>"
+        data-status="<%= monAn.TrangThaiPhucVu %>"
+      >
+        <i class="fa-solid fa-plus"></i>
+      </button>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<script src="/js/toast.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const addToCartBtn = document.querySelector(".add-to-cart-btn");
+
+    addToCartBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const foodId = addToCartBtn.getAttribute("data-id");
+      const status = addToCartBtn.getAttribute("data-status");
+      const email = "<%= user.Email %>"; // Email user hiện tại, truyền từ server
+      console.log(status);
+
+      if (status === "true") {
+        try {
+          const res = await fetch("/booking/cart/add", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, food: foodId }),
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            toastr.success("Đã thêm món ăn vào giỏ hàng", "Thành công");
+          } else {
+            toastr.error("Không thể thêm món ăn vào giỏ hàng", "Thất bại");
+          }
+        } catch (err) {
+          toastr.error("Không thể thêm món ăn vào giỏ hàng", "Thất bại");
+        }
+      } else {
+        toastr.error("Món ăn đã hết, vui lòng chọn món khác", "Thất bại");
+      }
+    });
+  });
+</script>
+
+<%- include('../partials/footer') %>

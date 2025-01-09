@@ -1,0 +1,81 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+  <select id="areaSelect" class="form-select">
+    <option value="" selected disabled>Chọn khu vực</option>
+    <% allKhuVuc.forEach(khuVuc => { %>
+    <option value="<%= khuVuc.MaKhuVuc %>"><%= khuVuc.TenKhuVuc %></option>
+    <% }) %>
+  </select>
+</div>
+
+<div class="container my-4">
+  <div class="row" id="sushiList">
+    <!-- Danh sách món sẽ hiển thị ở đây -->
+    <% allMonAn.forEach(monAn => { %>
+    <div
+      class="col-md-3 col-sm-6 sushi-item mt-4"
+      data-khuvuc="<%= monAn.MaKhuVuc %>"
+    >
+      <a href="/booking/dish-info/<%= monAn.MaMon %>" class="food-card">
+        <div class="food-item position-relative p-3">
+          <img
+            src="https://media-cdn.tripadvisor.com/media/photo-p/0a/1b/b2/3a/sushi-hokkaido-sachi.jpg"
+            alt="Bánh Mì Cô Chun"
+          />
+          <h5 class="mt-3"><%= monAn.TenMonAn %></h5>
+          <p class="text-muted mb-2"><%= monAn.MaPhanMuc %></p>
+          <p class="mt-2"><%= monAn.Gia %>đ</p>
+
+          <input
+            type="hidden"
+            name="email"
+            id="email"
+            value="<%= user.Email %>"
+          />
+          <input
+            type="hidden"
+            name="food"
+            id="food-<%= monAn.MaMon %>"
+            value="<%= monAn.MaMon %>"
+          />
+          <input type="hidden" name="staff" value="" />
+
+          <!-- Nút dấu cộng -->
+          <button
+            type="submit"
+            class="add-to-cart-btn btn btn-warning position-absolute"
+            data-id="<%= monAn.MaMon %>"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </a>
+    </div>
+    <% }) %>
+  </div>
+</div>
+
+<script src="/js/toast.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const areaSelect = document.getElementById("areaSelect");
+    const sushiList = document.getElementById("sushiList");
+
+    areaSelect.addEventListener("change", () => {
+      const selectedArea = areaSelect.value;
+      const sushiItems = sushiList.querySelectorAll(".sushi-item");
+
+      sushiItems.forEach((item) => {
+        const khuVuc = item.getAttribute("data-khuvuc");
+        if (selectedArea === khuVuc || !selectedArea) {
+          item.style.display = "";
+        } else {
+          item.style.display = "none";
+        }
+      });
+    });
+  });
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,102 @@
+<%- include('../../partials/header') %>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <%- include('../../partials/staffNavbar') %>
+
+        <div class="col-md-12 p-4">
+            <div class="container mt-4">
+                <h2 class="mb-4 text-center">Thống Kê Doanh Thu</h2>
+            
+                <form id="stat-form" class="row g-3 align-items-center mb-4">
+                    <div class="col-md-3">
+                        <label for="statType" class="form-label">Loại Thống Kê</label>
+                        <select class="form-select" id="statType" name="statType">
+                            <option <% if (statType === "ngay") { %> selected <% } %> value="ngay" selected>Theo Ngày</option>
+                            <option <% if (statType === "thang") { %> selected <% } %> value="thang">Theo Tháng</option>
+                            <option <% if (statType === "quy") { %> selected <% } %> value="quy">Theo Quý</option>
+                            <option <% if (statType === "nam") { %> selected <% } %> value="nam">Theo Năm</option>
+                        </select>
+                    </div>
+            
+                    <div class="col-md-3">
+                        <label for="startDate" class="form-label">Ngày Bắt Đầu</label>
+                        <input type="date" id="startDate" name="startDate" class="form-control" value="<%= startDate %>" />
+                    </div>
+            
+                    <div class="col-md-3">
+                        <label for="endDate" class="form-label">Ngày Kết Thúc</label>
+                        <input type="date" id="endDate" name="endDate" class="form-control" value="<%= endDate %>" />
+                    </div>
+            
+                    <div class="col-md-2">
+                        <label class="form-label d-block">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary w-100">Xem Thống Kê</button>
+                    </div>
+                </form>
+            
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Thời Gian</th>
+                            <th>Tổng Doanh Thu (VNĐ)</th>
+                            <th>Số Lượng Đơn</th>
+                            <th>Ghi Chú</th>
+                        </tr>
+                    </thead>
+                    <tbody id="revenue-stats">
+                        <% for (let i = 0; i < revenueStats.length; i++) { %>
+                            <tr>
+                                <td><%= revenueStats[i].ThoiGian %></td>
+                                <td><%= revenueStats[i].TongDoanhThu %></td>
+                                <td><%= revenueStats[i].SoDon %></td>
+                                <td> - </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>                      
+        </div>
+    </div>
+</div>
+
+<script src="/js/toast.js"></script>
+<script>
+    const statForm = document.getElementById('stat-form');
+    statForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(statForm);
+        const statType = formData.get('statType');
+        const startDate = formData.get('startDate');
+        const endDate = formData.get('endDate');
+
+        const response = await fetch(`/staff/statistics/revenue`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                statType,
+                startDate,
+                endDate
+            })
+        });
+
+        const { revenueStats } = await response.json();
+        const revenueStatsTable = document.getElementById('revenue-stats');
+        revenueStatsTable.innerHTML = '';
+        revenueStats.forEach(stat => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${stat.ThoiGian}</td>
+                <td>${stat.TongDoanhThu}</td>
+                <td>${stat.SoDon}</td>
+                <td> - </td>
+            `;
+            revenueStatsTable.appendChild(row);
+        });
+    });
+</script>
+
+<%- include('../../partials/footer') %>

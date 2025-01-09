@@ -1,0 +1,71 @@
+<%- include('../../partials/header') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <%- include('../../partials/staffNavbar') %>
+
+    <div class="col-md-12 p-4">
+      <div class="container mt-4">
+        <h2 class="mb-4 text-center">Chỉnh Sửa Thông Tin Thẻ Khách Hàng</h2>
+        <form action="/staff/customer-card/edit/<%= customerCard.MaThe %>" method="POST">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="MATHE" class="form-label">Mã Thẻ</label>
+              <input type="text" id="MATHE" name="MATHE" class="form-control" value="<%= customerCard.MaThe %>" readonly />
+            </div>
+
+            <div class="col-md-6">
+              <label for="NGAYLAP" class="form-label">Ngày Lập</label>
+              <input type="date" id="NGAYLAP" name="NGAYLAP" class="form-control" value="<%= customerCard.NgayLap %>" readonly/>
+            </div>
+
+            <div class="col-md-6">
+              <label for="NGAYHETHAN" class="form-label">Ngày Hết Hạn</label>
+              <input type="date" id="NGAYHETHAN" name="NGAYHETHAN" class="form-control" value="<%= customerCard.NgayHetHan %>" />
+            </div>
+
+            <div class="col-md-6">
+              <label for="DIEMTICHLUY" class="form-label">Điểm Tích Lũy</label>
+              <input type="number" id="DIEMTICHLUY" name="DIEMTICHLUY" class="form-control" value="<%= customerCard.DiemTichLuy %>" />
+            </div>
+
+            <div class="col-md-6">
+              <label for="TRANGTHAI" class="form-label">Trạng Thái</label>
+              <select id="TRANGTHAI" name="TRANGTHAI" class="form-select">
+                <option value="Active" <%= customerCard.TrangThai === "Active" ? "selected" : "" %>>Hoạt động</option>
+                <option value="Locked" <%= customerCard.TrangThai !== "Locked" ? "selected" : "" %>>Đã khóa</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="LOAITHE" class="form-label">Loại Thẻ</label>
+              <select id="LOAITHE" name="LOAITHE" class="form-select">
+                <option value="Membership" <%= customerCard.LoaiThe === 'Membershio' ? 'selected' : '' %>>Thẻ Thường</option>
+                <option value="Cooper" <%= customerCard.LoaiThe === 'Cooper' ? 'selected' : '' %>>Thẻ Đồng</option>
+                <option value="Silver" <%= customerCard.LoaiThe === 'Silver' ? 'selected' : '' %>>Thẻ Bạc</option>
+                <option value="Gold" <%= customerCard.LoaiThe === 'Gold' ? 'selected' : '' %>>Thẻ Vàng</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="MAKHACHHANG" class="form-label">Mã Khách Hàng</label>
+              <input type="text" id="MAKHACHHANG" name="MAKHACHHANG" class="form-control" value="<%= customerCard.MaKhachHang %>" readonly/>
+            </div>
+          </div>
+
+          <div class="mt-4 text-center">
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-save"></i> Lưu Thay Đổi
+            </button>
+            <a href="/staff/customer-card/1" class="btn btn-secondary">
+              <i class="fas fa-arrow-left"></i> Quay Lại
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/footer') %>
+

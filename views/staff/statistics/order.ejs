@@ -1,0 +1,103 @@
+<%- include('../../partials/header') %>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <%- include('../../partials/staffNavbar') %>
+
+        <div class="col-md-12 p-4">
+            <div class="container mt-4">
+                <h1 class="mb-4">Quản Lý Phiếu Đặt Món</h1>
+                
+                <!-- Quản lý phiếu mua hàng -->
+                <div class="mb-5">
+                    <form class="row g-3" method="POST" action="/staff/orders/search">
+                        <div class="col-md-2">
+                            <label for="ngayLap" class="form-label">Ngày Lập</label>
+                            <input type="date" class="form-control" id="ngayLap" name="ngayLap" value="<%= ngayLap ? ngayLap : '' %>">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="maNhanVien" class="form-label">Mã Nhân Viên</label>
+                            <input type="text" class="form-control" id="maNhanVien" name="maNhanVien" value="<%= maNhanVien ? maNhanVien : '' %>" placeholder="Nhập mã nhân viên">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="maKhachHang" class="form-label">Mã Khách Hàng</label>
+                            <input type="text" class="form-control" id="maKhachHang" name="maKhachHang" value="<%= maKhachHang ? maKhachHang : '' %>" placeholder="Nhập mã khách hàng">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Tìm Phiếu</button>
+                        </div>
+                    </form>
+                    <div class="mt-4 table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="">
+                                <tr>
+                                    <th>Mã Phiếu</th>
+                                    <th>Ngày Lập</th>
+                                    <th>Mã Nhân Viên</th>
+                                    <th>Mã Khách Hàng</th>
+                                    <th>Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (orders.length > 0) { %>
+                                    <% orders.forEach(order => { %>
+                                        <tr>
+                                            <td><%= order.MaPhieu %></td>
+                                            <td><%= order.NgayLap %></td>
+                                            <td><%= order.MaNhanVien %></td>
+                                            <td><%= order.MaKhachHang || 'N/A' %></td>
+                                            <td>
+                                                <a href="/staff/orders/edit/<%= order.MaPhieu %>" class="btn btn-warning btn-sm">Sửa</a>
+                                                <form method="GET" action="/staff/orders/delete/<%= order.MaPhieu %>" style="display:inline;">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" class="text-center">Không có phiếu mua hàng nào</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+
+                        <% if (totalPages !== 1) { %>
+                            <div class="pagination-section">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center" id="pagination">
+                                        <!-- Previous Button -->
+                                        <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                                            <a class="page-link" href="/staff/orders/<%= currentPage - 1 %>?MaNhanVien=<%= maNhanVien %>&MaKhachHang=<%= maKhachHang %>&NgayLap=<%= ngayLap %>" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+            
+                                        <!-- Page Numbers -->
+                                        <% for (let i = (currentPage >= 3 ? currentPage - 2 : 1); i <= Math.min(totalPages, currentPage + 3); i++) { %>
+                                            <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                                                <a class="page-link" href="/staff/orders/<%= i %>?MaNhanVien=<%= maNhanVien %>&MaKhachHang=<%= maKhachHang %>&NgayLap=<%= ngayLap %>" ><%= i %></a>
+                                            </li>
+                                        <% } %>
+            
+                                        <!-- Next Button -->
+                                        <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                            <a class="page-link" href="/staff/orders/<%= currentPage + 1 %>?MaNhanVien=<%= maNhanVien %>&MaKhachHang=<%= maKhachHang %>&NgayLap=<%= ngayLap %>" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>             
+        </div>
+    </div>
+</div>
+
+<%- include('../../partials/footer') %>
+
+

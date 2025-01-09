@@ -1,0 +1,50 @@
+<%- include('../../partials/header') %>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <%- include('../../partials/staffNavbar') %>
+
+        <div class="col-md-12 p-4">
+            <div class="container mt-4">
+                <h1 class="mb-4">Sửa Phiếu Mua Hàng</h1>
+                
+                <form method="POST" action="/staff/orders/edit/<%= order.MaPhieu %>">
+                    <div class="row g-3">
+                        <!-- Mã Phiếu (Read-Only) -->
+                        <div class="col-md-12">
+                            <label for="maPhieu" class="form-label">Mã Phiếu</label>
+                            <input type="text" class="form-control" id="maPhieu" name="maPhieu" value="<%= order.MaPhieu %>" readonly>
+                        </div>
+
+                        <!-- Ngày Lập -->
+                        <div class="col-md-6">
+                            <label for="ngayLap" class="form-label">Ngày Lập</label>
+                            <input type="date" class="form-control" id="ngayLap" name="ngayLap" value="<%= order.NgayLap %>">
+                        </div>
+
+                        <!-- Mã Nhân Viên -->
+                        <div class="col-md-6">
+                            <label for="maNhanVien" class="form-label">Mã Nhân Viên</label>
+                            <input type="text" class="form-control" id="maNhanVien" name="maNhanVien" value="<%= order.MaNhanVien %>">
+                        </div>
+
+                        <!-- Mã Khách Hàng -->
+                        <div class="col-md-6">
+                            <label for="maKhachHang" class="form-label">Mã Khách Hàng</label>
+                            <input type="text" class="form-control" id="maKhachHang" name="maKhachHang" value="<%= order.MaKhachHang %>">
+                        </div>
+                        
+                        <!-- Buttons -->
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <a href="/staff/orders/1" class="btn btn-secondary mx-2">Hủy</a>
+                            <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+                        </div>
+                    </div>
+                </form>
+            </div>             
+        </div>
+    </div>
+</div>
+
+<%- include('../../partials/footer') %>

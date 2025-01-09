@@ -1,0 +1,46 @@
+<%- include('./partials/header') %>
+
+<div class="container my-5">
+  <h1 class="text-center text-orange">
+    <i class="fas fa-user"></i> Thông Tin Khách Hàng
+  </h1>
+  <div class="card mt-4 shadow-lg">
+    <div class="card-header bg-orange text-white">
+      <h5 class="mb-0">
+        <i class="fas fa-address-card"></i> Chi Tiết Khách Hàng
+      </h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row" class="text-end w-25">Mã Khách Hàng:</th>
+            <td><%= profile.MaKhachHang %></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-end">Họ Tên:</th>
+            <td><%= profile.HoTen %></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-end">Giới Tính:</th>
+            <td><%= profile.GioiTinh %></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-end">CCCD:</th>
+            <td><%= profile.CCCD %></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-end">Điện Thoại:</th>
+            <td><i class="fas fa-phone"></i> <%= profile.DienThoai %></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-end">Email:</th>
+            <td><i class="fas fa-envelope"></i> <%= profile.Email %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>

@@ -1,0 +1,103 @@
+<%- include('../../partials/header') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <%- include('../../partials/staffNavbar') %>
+
+    <div class="col-md-12 p-4">
+      <div class="container mt-4">
+        <h1 class="mb-4">Thống Kê Thẻ Khách Hàng</h1>
+
+        <!-- Form tìm kiếm -->
+        <form
+          class="row g-3 align-items-center mb-4"
+          method="POST"
+          action="/staff/customer-card/search"
+        >
+          <div class="col-md-4">
+            <label for="searchCard" class="form-label">Tìm kiếm thẻ</label>
+            <input
+              type="text"
+              class="form-control"
+              id="searchCard"
+              name="query"
+              value="<%= query %>"
+              placeholder="Nhập mã thẻ"
+            />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label d-block">&nbsp;</label>
+            <button type="submit" class="btn btn-primary w-100">
+              Tìm kiếm
+            </button>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label d-block">&nbsp;</label>
+            <a href="/staff/customer-card/add" class="btn btn-success w-100"
+              >Thêm Thẻ</a
+            >
+          </div>
+        </form>
+
+        <!-- Bảng thống kê thẻ khách hàng -->
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Mã Thẻ</th>
+                <th>Ngày Lập</th>
+                <th>Ngày Hết Hạn</th>
+                <th>Điểm Tích Luỹ</th>
+                <th>Trạng Thái</th>
+                <th>Loại Thẻ</th>
+                <th>Mã Khách Hàng</th>
+                <th>Hành Động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (cards.length > 0) { %> <% cards.forEach(card => { %>
+              <tr>
+                <td><%= card.MaThe %></td>
+                <td><%= card.NgayLap %></td>
+                <td><%= card.NgayHetHan %></td>
+                <td><%= card.DiemTichLuy %></td>
+                <td><%= card.TrangThai %></td>
+                <td><%= card.LoaiThe %></td>
+                <td><%= card.MaKhachHang %></td>
+                <td>
+                  <a
+                    href="/staff/customer-card/edit/<%= card.MaThe %>"
+                    class="btn btn-sm btn-warning my-1"
+                    >Sửa</a
+                  >
+                  <form
+                    method="POST"
+                    action="/staff/customer-card/delete/<%= card.MaThe %>"
+                    class="d-inline"
+                  >
+                    <button
+                      type="submit"
+                      class="btn btn-sm btn-danger"
+                      onclick="return confirm('Bạn có chắc chắn muốn xoá thẻ này?')"
+                    >
+                      Xóa
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %> <% } else { %>
+              <tr>
+                <td colspan="9" class="text-center">
+                  Không tìm thấy thẻ khách hàng
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/footer') %>

@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Sidebar -->
+        <%- include('../partials/staffNavbar') %>
+
+        <!-- Main Content -->
+        <div class="col-md-12 p-4">
+            <h1 class="text-center mb-4">Danh Sách Món Ăn</h1>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên Món Ăn</th>
+                                <th>Giá (VND)</th>
+                                <th>Trạng thái</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% allMonAn.forEach((dish, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= dish.TenMonAn %></td>
+                                    <td><%= dish.Gia.toLocaleString() %></td>
+                                    <td>
+                                        <% if (dish.TrangThaiPhucVu == 1) { %>
+                                            <span class="">Đang bán</span>
+                                        <% } else { %>
+                                            <span class="">Ngừng bán</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <a href="/staff/update-dish/<%= dish.MaMon %>" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i> Chỉnh Sửa
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+</script>
+
+<%- include('../partials/footer') %>

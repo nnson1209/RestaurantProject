@@ -1,0 +1,65 @@
+<%- include('../../partials/header') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <%- include('../../partials/staffNavbar') %>
+
+    <div class="col-md-12 p-4">
+      <div class="container mt-4">
+        <h1 class="mb-4">Thêm Thẻ Khách Hàng</h1>
+
+        <!-- Form thêm thẻ khách hàng -->
+        <form id="addCustomerCardForm">
+          <div class="mb-3">
+            <label for="MAKHACHHANG" class="form-label">Mã Khách Hàng</label>
+            <input
+              type="text"
+              class="form-control"
+              id="MAKHACHHANG"
+              name="MAKHACHHANG"
+              placeholder="Mã khách hàng"
+              required
+            />
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Lưu Thẻ</button>
+            <a href="/staff/customer-card/1" class="btn btn-secondary ms-2"
+              >Hủy</a
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/toast.js"></script>
+<script>
+  const addCustomerCardForm = document.getElementById("addCustomerCardForm");
+  addCustomerCardForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const MAKHACHHANG = addCustomerCardForm.MAKHACHHANG.value;
+
+    const response = await fetch("/staff/customer-card/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        MAKHACHHANG,
+      }),
+    });
+
+    const res = await response.json();
+
+    if (res.success) {
+      window.location.href = "/staff/customer-card/1";
+    } else {
+      toastr.error(res.message, "Thất bại");
+    }
+  });
+</script>
+
+<%- include('../../partials/footer') %>

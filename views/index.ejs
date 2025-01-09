@@ -1,0 +1,82 @@
+<%- include('partials/header') %>
+
+<!-- Hero Section -->
+<div class="hero">
+  <h1>Chào mừng đến với SuShiX</h1>
+  <p>
+    Hệ thống nhà hàng SuShiX với 15 chi nhánh phủ khắp các thành phố lớn như Hồ
+    Chí Minh, Hà Nội, Đà Nẵng, đã trở thành điểm đến quen thuộc của thực khách
+    yêu ẩm thực Nhật Bản. Với sự tin yêu của khách hàng, SuShiX không chỉ cam
+    kết mang lại trải nghiệm ẩm thực chất lượng mà còn đặt mục tiêu phát triển
+    mạnh mẽ hơn, mở rộng quy mô trên toàn quốc, nhằm đưa tinh hoa văn hóa Nhật
+    Bản đến gần hơn với người Việt.
+  </p>
+</div>
+
+<div class="container my-4">
+  <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+    <ol class="carousel-indicators">
+      <li
+        data-bs-target="#carouselId"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="First slide"
+      ></li>
+      <li
+        data-bs-target="#carouselId"
+        data-bs-slide-to="1"
+        aria-label="Second slide"
+      ></li>
+      <li
+        data-bs-target="#carouselId"
+        data-bs-slide-to="2"
+        aria-label="Third slide"
+      ></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item active">
+        <img
+          src="https://brand-pcms.ggg.systems/media/so/homecmsdata/banners/isushi2.png"
+          class="w-70 d-block"
+          alt="First slide"
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          src="https://brand-pcms.ggg.systems/media/so/homecmsdata/banners/isushi4.png"
+          class="w-70 d-block"
+          alt="Second slide"
+        />
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselId"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselId"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".add-to-cart-btn");
+
+    buttons.forEach((button) => {});
+  });
+</script>
+
+<%- include('partials/footer') %>

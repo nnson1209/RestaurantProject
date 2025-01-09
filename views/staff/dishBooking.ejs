@@ -1,0 +1,504 @@
+<%- include('../partials/header') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <%- include('../partials/staffNavbar') %>
+
+    <!-- Main Content -->
+    <div class="col-md-12 p-4">
+      <h1 class="text-center mb-4">Đặt Món Cho Khách Hàng</h1>
+
+      <div class="card mb-4">
+        <div class="card-header">Chọn Bàn</div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="tableSelect" class="form-label">Bàn:</label>
+            <select class="form-select" id="tableSelect" name="table">
+              <option selected>Chọn bàn...</option>
+              <option value="1">Bàn 1</option>
+              <option value="2">Bàn 2</option>
+              <option value="3">Bàn 3</option>
+              <option value="4">Bàn 4</option>
+              <option value="5">Bàn 5</option>
+              <option value="6">Bàn 6</option>
+              <option value="7">Bàn 7</option>
+              <option value="8">Bàn 8</option>
+              <option value="9">Bàn 9</option>
+              <option value="10">Bàn 10</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thông tin khách hàng -->
+      <div class="card mb-4">
+        <div class="card-header">Thông Tin Khách Hàng</div>
+        <div class="card-body">
+          <!-- Chọn trạng thái khách hàng -->
+          <div class="mb-3">
+            <label for="membership" class="form-label">Khách Hàng:</label>
+            <select
+              class="form-select"
+              id="membership"
+              name="membership"
+              onchange="toggleCustomerFields()"
+            >
+              <option value="no-card">Chưa Có Thẻ</option>
+              <option value="has-card">Đã Có Thẻ</option>
+            </select>
+          </div>
+
+          <!-- Trường nhập mã khách hàng (ẩn mặc định) -->
+          <div id="existing-customer" class="mb-3" style="display: none">
+            <label for="memberCard" class="form-label">Mã Khách Hàng:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="memberCard"
+              name="memberCard"
+              placeholder="Nhập mã khách hàng"
+            />
+            <button class="btn btn-primary mt-4" id="checkCustomerCard">
+              Kiểm tra
+            </button>
+          </div>
+
+          <!-- Form đăng ký thông tin (hiển thị mặc định) -->
+          <div id="new-customer">
+            <div class="mb-3">
+              <label for="name" class="form-label">Họ Tên:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="cccd" class="form-label">CCCD:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="cccd"
+                name="cccd"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="gender" class="form-label">Giới tính:</label>
+              <select class="form-select" id="gender" name="gender">
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Số Điện Thoại:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="phone"
+                name="phone"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                required
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chọn món -->
+      <div class="card mb-4">
+        <div class="card-header">Thêm Món Ăn</div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="dishSelect" class="form-label">Món Ăn:</label>
+              <select class="form-select" id="dishSelect">
+                <option value="" selected>Chọn món...</option>
+                <% allMonAn.forEach(monAn => { %>
+                <option
+                  value="<%= monAn.TenMonAn %>"
+                  data-id="<%= monAn.MaMon %>"
+                  data-price="<%= monAn.Gia %>"
+                >
+                  <%= monAn.TenMonAn %> - <%= monAn.Gia %> VND
+                </option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="quantity" class="form-label">Số Lượng:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="quantity"
+                placeholder="0"
+                min="1"
+              />
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button
+                type="button"
+                class="btn btn-primary w-100"
+                id="addDishBtn"
+              >
+                Thêm Món
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bảng phiếu đặt -->
+      <div class="card mb-4">
+        <div class="card-header">Phiếu Đặt Món</div>
+        <div class="card-body">
+          <table class="table table-striped" id="orderTable">
+            <thead>
+              <tr>
+                <th>Tên Món</th>
+                <th>Số Lượng</th>
+                <th>Giá</th>
+                <th>Tổng</th>
+                <th>Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class="text-end">
+            <strong>Tổng Cộng: <span id="totalPrice">0</span> VND</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thanh toán -->
+      <div class="card mb-4">
+        <div class="card-header">Thanh Toán</div>
+        <div class="card-body">
+          <div class="text-end">
+            <button type="button" class="btn btn-primary" id="checkoutBtn">
+              Xuất Hoá Đơn
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hoá đơn -->
+      <div class="card mb-4 d-none" id="invoiceCard">
+        <div class="card-header">Hoá Đơn Thanh Toán</div>
+        <div class="card-body">
+          <p><strong>Bàn: </strong><span id="tableNumber"></span></p>
+          <p><strong>Khách Hàng: </strong> <span id="invoiceName">N/A</span></p>
+          <!-- Danh sách món ăn: -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Tên Món</th>
+                <th>Số Lượng</th>
+                <th>Giá</th>
+                <th>Tổng</th>
+              </tr>
+            </thead>
+            <tbody id="invoiceDishes"></tbody>
+          </table>
+          <p>
+            <strong>Mã Thẻ Thành Viên:</strong>
+            <span id="invoiceMemberCard">N/A</span>
+          </p>
+          <p>
+            <strong>Tổng Tiền Trước Giảm:</strong>
+            <span id="invoiceTotalBefore">0</span> VND
+          </p>
+          <p>
+            <strong>Giảm Giá:</strong> <span id="invoiceDiscount">0</span> VND
+          </p>
+          <p>
+            <strong>Tổng Thanh Toán:</strong>
+            <span id="invoiceTotalAfter">0</span> VND
+          </p>
+          <div class="text-end">
+            <button class="btn btn-primary" id="printBtn">In Hoá Đơn</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const checkCustomerCardBtn = document.getElementById("checkCustomerCard");
+  checkCustomerCardBtn.addEventListener("click", async () => {
+    fetch("/staff/customer-card", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        card: document.getElementById("memberCard").value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const toastEl = document.getElementById("toastMessage");
+        const toastContent = document.getElementById("toastContent");
+
+        toastContent.innerHTML = `<i class="fa-solid fa-circle-${
+          data.type === "success"
+            ? "check"
+            : data.type === "danger"
+            ? "xmark"
+            : "exclamation"
+        }"></i> ${data.message}`;
+
+        toastEl.classList.remove(
+          "text-bg-primary",
+          "text-bg-danger",
+          "text-bg-warning",
+          "text-bg-info"
+        );
+        toastEl.classList.add(`text-bg-${data.type}`);
+
+        toastEl.style.display = "block";
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+      });
+  });
+</script>
+
+<script>
+  function toggleCustomerFields() {
+    const membershipSelect = document.getElementById("membership");
+    const existingCustomer = document.getElementById("existing-customer");
+    const newCustomer = document.getElementById("new-customer");
+
+    if (membershipSelect.value === "has-card") {
+      existingCustomer.style.display = "block";
+      newCustomer.style.display = "none";
+    } else {
+      existingCustomer.style.display = "none";
+      newCustomer.style.display = "block";
+    }
+  }
+
+  const dishesList = [];
+
+  const addDishBtn = document.getElementById("addDishBtn");
+  const orderTableBody = document.querySelector("#orderTable tbody");
+  const totalPriceEl = document.getElementById("totalPrice");
+
+  let totalPrice = 0;
+
+  // Thêm món ăn vào phiếu
+  addDishBtn.addEventListener("click", () => {
+    const dishSelect = document.getElementById("dishSelect");
+    const quantityInput = document.getElementById("quantity");
+
+    const dishName = dishSelect.value;
+    const dishId = dishSelect.selectedOptions[0].dataset.id;
+    const dishPrice = parseInt(
+      dishSelect.selectedOptions[0].dataset.price || 0
+    );
+    const quantity = parseInt(quantityInput.value || 0);
+
+    if (!dishName || quantity <= 0) {
+      alert("Vui lòng chọn món và nhập số lượng hợp lệ.");
+      return;
+    }
+
+    dishesList.push({ id: dishId, quantity });
+
+    const total = dishPrice * quantity;
+
+    // Thêm món vào bảng
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${dishName}</td>
+        <td>${quantity}</td>
+        <td>${dishPrice.toLocaleString()} VND</td>
+        <td>${total.toLocaleString()} VND</td>
+        <td><button class="btn btn-sm btn-danger delete-btn">Xóa</button></td>
+      `;
+    orderTableBody.appendChild(row);
+
+    // Cập nhật tổng tiền
+    totalPrice += total;
+    totalPriceEl.textContent = totalPrice.toLocaleString();
+
+    // Xóa món
+    row.querySelector(".delete-btn").addEventListener("click", () => {
+      totalPrice -= total;
+      totalPriceEl.textContent = totalPrice.toLocaleString();
+      row.remove();
+    });
+
+    // Reset form
+    dishSelect.value = "";
+    quantityInput.value = "";
+  });
+
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  const invoiceCard = document.getElementById("invoiceCard");
+  const invoiceMemberCard = document.getElementById("invoiceMemberCard");
+  const invoiceTotalBefore = document.getElementById("invoiceTotalBefore");
+  const invoiceDiscount = document.getElementById("invoiceDiscount");
+  const invoiceTotalAfter = document.getElementById("invoiceTotalAfter");
+  const invoiceDishes = document.getElementById("invoiceDishes");
+  const invoiceName = document.getElementById("invoiceName");
+  const tableNumber = document.getElementById("tableNumber");
+
+  const addSampleDish = (name, price, quantity) => {
+    const total = price * quantity;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${name}</td>
+        <td>${quantity}</td>
+        <td>${price.toLocaleString()} VND</td>
+        <td>${total.toLocaleString()} VND</td>
+        <td><button class="btn btn-sm btn-danger delete-btn">Xóa</button></td>
+      `;
+    orderTableBody.appendChild(row);
+
+    totalPrice += total;
+    totalPriceEl.textContent = totalPrice.toLocaleString();
+
+    row.querySelector(".delete-btn").addEventListener("click", () => {
+      totalPrice -= total;
+      totalPriceEl.textContent = totalPrice.toLocaleString();
+      row.remove();
+    });
+  };
+
+  // Xuất hóa đơn
+  checkoutBtn.addEventListener("click", () => {
+    const memberCard = document.getElementById("memberCard").value.trim();
+    const discount = 0;
+    const totalAfter = totalPrice - discount;
+
+    // Hiển thị hóa đơn
+    tableNumber.textContent = document.getElementById("tableSelect").value;
+    invoiceName.textContent = document.getElementById("name").value;
+    invoiceDishes.innerHTML = "";
+    const html = dishesList
+      .map((dish) => {
+        const dishName = document.querySelector(
+          `#dishSelect option[data-id="${dish.id}"]`
+        ).textContent;
+        return `
+          <tr>
+            <td>${dishName}</td>
+            <td>${dish.quantity}</td>
+            <td>${
+              dish.quantity *
+              parseInt(
+                document.querySelector(
+                  `#dishSelect option[data-id="${dish.id}"]`
+                ).dataset.price
+              )
+            } VND</td>
+            <td>${(
+              dish.quantity *
+              parseInt(
+                document.querySelector(
+                  `#dishSelect option[data-id="${dish.id}"]`
+                ).dataset.price
+              )
+            ).toLocaleString()} VND</td>
+          </tr>
+        `;
+      })
+      .join("");
+    dishesList.forEach((dish) => {
+      const dishName = document.querySelector(
+        `#dishSelect option[data-id="${dish.id}"]`
+      ).textContent;
+      invoiceDishes.innerHTML = `
+          ${html}
+        `;
+    });
+    invoiceMemberCard.textContent = memberCard || "Không có";
+    invoiceTotalBefore.textContent = totalPrice.toLocaleString();
+    invoiceDiscount.textContent = discount.toLocaleString();
+    invoiceTotalAfter.textContent = totalAfter.toLocaleString();
+
+    invoiceCard.classList.remove("d-none");
+  });
+
+  // In hóa đơn
+  const printBtn = document.getElementById("printBtn");
+  printBtn.addEventListener("click", async (e) => {
+    // submit
+    const table = document.getElementById("tableSelect").value;
+    const name = document.getElementById("name").value;
+    const cccd = document.getElementById("cccd").value;
+    const gender = document.getElementById("gender").value;
+    const phone = document.getElementById("phone").value;
+    const email = document.getElementById("email").value;
+    const memberCard = document.getElementById("memberCard").value;
+    const total = totalPrice;
+    const dishes = dishesList;
+
+    const data = {
+      table,
+      name,
+      cccd,
+      gender,
+      phone,
+      email,
+      memberCard,
+      total,
+      dishes,
+    };
+
+    await fetch("/staff/booking", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          const toastEl = document.getElementById("toastMessage");
+          const toastContent = document.getElementById("toastContent");
+
+          toastContent.innerHTML = `<i class="fa-solid fa-circle-${
+            data.type === "success"
+              ? "check"
+              : data.type === "danger"
+              ? "xmark"
+              : "exclamation"
+          }"></i> ${data.message}`;
+
+          toastEl.classList.remove(
+            "text-bg-primary",
+            "text-bg-danger",
+            "text-bg-warning",
+            "text-bg-info"
+          );
+          toastEl.classList.add(`text-bg-${data.type}`);
+
+          toastEl.style.display = "block";
+          const toast = new bootstrap.Toast(toastEl);
+          toast.show();
+        } else {
+          console.log("success");
+          window.location.href = "/staff";
+        }
+      });
+  });
+</script>
+
+<%- include('../partials/footer') %>

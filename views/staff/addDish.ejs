@@ -1,0 +1,83 @@
+<%- include('../partials/header') %>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Sidebar -->
+        <%- include('../partials/staffNavbar') %>
+
+        <!-- Main Content -->
+        <div class="col-md-12 p-4">
+            <main class="main">
+                <h2 class="text-center my-4">Thêm Món Mới</h2>
+                <form action="/staff/add-dish" method="post">
+                    <div class="mb-3">
+                        <label for="area" class="form-label">Khu Vực</label>
+                        <select id="area" class="form-select">
+                            <option disabled selected value="">Chọn Khu Vực</option>
+                            <% allKhuVuc.forEach(kv => { %>
+                             <option value="<%= kv.MaKhuVuc %>"><%= kv.TenKhuVuc %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Phân Mục</label>
+                        <select id="category" name="category" class="form-select" disabled required>
+                            <option disabled selected value="">Chọn Phân Mục</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dish-name" class="form-label">Tên Món Ăn</label>
+                        <input type="text" id="dish-name" class="form-control" name="name" placeholder="Nhập tên món ăn" disabled required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Giá</label>
+                        <input type="number" id="price" class="form-control" name="price" placeholder="Nhập giá món ăn" disabled required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Trạng Thái Phục Vụ</label>
+                        <select id="status" name="status" class="form-select" disabled required>
+                            <option disabled selected value="">Chọn Trạng Thái</option>
+                            <option value="1">Đang Phục Vụ</option>
+                            <option value="0">Ngừng Phục Vụ</option>
+                        </select>
+                    </div>
+                    <div class="d-grid">
+                        <button disabled type="submit" id="submit-btn" class="btn btn-orange">Thêm Món</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+</div>
+
+<script>
+    const areaSelect = document.getElementById('area');
+    const categorySelect = document.getElementById('category');
+    const dishNameInput = document.getElementById('dish-name');
+    const priceInput = document.getElementById('price');
+    const statusSelect = document.getElementById('status');
+    const submitBtn = document.getElementById('submit-btn');
+
+    areaSelect.addEventListener('change', () => {
+        categorySelect.disabled = false;
+
+        const categories = JSON.parse('<%- JSON.stringify(phanMuc) %>');
+
+        categorySelect.innerHTML = '<option disabled selected value="">Chọn Phân Mục</option>';
+        const selectedArea = areaSelect.value;
+        categories[selectedArea].forEach(category => {
+            categorySelect.innerHTML += `<option value="${category.MAPHANMUC}">${category.TENPHANMUC}</option>`;
+        });
+
+        categorySelect.addEventListener('change', () => {
+            dishNameInput.disabled = false;
+            priceInput.disabled = false;
+            statusSelect.disabled = false;
+            submitBtn.disabled = false;
+        });
+
+    });
+</script>
+
+<%- include('../partials/footer') %>
