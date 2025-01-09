@@ -1,5 +1,6 @@
 const MonAn = require("../models/monAnModel");
 const KhachHang = require("../models/khachHangModel");
+const NhanVien = require("../models/nhanVienModel");
 
 class mainController {
   async loadMainPage(req, res) {
@@ -45,7 +46,7 @@ class mainController {
       // Lấy thông tin người dùng hiện tại
       const user = role === "customer" 
         ? await KhachHang.one(email) 
-        : await NhanVien.one(email);
+        : await NhanVien.getMaNhanVienByEmail(email);
   
       if (!user) {
         return res.status(404).send("User not found.");
@@ -63,7 +64,7 @@ class mainController {
       // Render đúng file EJS dựa trên vai trò
       const template = role === "customer" 
         ? "customerProfile" 
-        : "employeeProfile";
+        : "staffProfile";
 
       res.render(template, {
         user,

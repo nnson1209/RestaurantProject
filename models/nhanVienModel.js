@@ -28,6 +28,17 @@ class NhanVien {
     return result.recordset[0];
   }
 
+  static async oneById(maNhanVien) {
+    const pool = await poolPromise;
+
+    const result = await pool
+      .request()
+      .input("maNhanVien", sql.VarChar, maNhanVien)
+      .query("SELECT NV.*, ST.Email FROM NHAN_VIEN NV JOIN STAFF_APP ST ON NV.MaNhanVien = ST.MaNhanVien WHERE  NV.MaNhanVien = @maNhanVien");
+
+    return result.recordset[0];
+  }
+
   static async add(nhanVien) {
     const pool = await poolPromise;
 

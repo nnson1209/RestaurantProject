@@ -15,7 +15,7 @@ router.get(
 );
 router.get(
   "/profile/:id",
-  authMiddleware(["customer"]),
+  authMiddleware(["customer", "staff"]),
   mainController.loadProfile
 );
 
